@@ -44,6 +44,7 @@ const (
 	actionAllow
 	// actionBlock blocks unauthorized queries towards protected DNS zones.
 	actionBlock
+	actionFilter
 )
 
 // ServeDNS implements the plugin.Handler interface.
@@ -64,6 +65,13 @@ RulesCheckLoop:
 			{
 				m := new(dns.Msg)
 				m.SetRcode(r, dns.RcodeRefused)
+				w.WriteMsg(m)
+				return dns.RcodeSuccess, nil
+			}
+		case actionFilter:
+			{
+				m := new(dns.Msg)
+				m.SetRcode(r, dns.RcodeSuccess)
 				w.WriteMsg(m)
 				return dns.RcodeSuccess, nil
 			}
