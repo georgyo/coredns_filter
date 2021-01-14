@@ -12,7 +12,7 @@ import (
 	"github.com/miekg/dns"
 )
 
-const pluginName = "acl"
+const pluginName = "filter"
 
 func init() { plugin.Register(pluginName, setup) }
 
